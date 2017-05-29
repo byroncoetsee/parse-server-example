@@ -16,13 +16,14 @@ Parse.Cloud.define("pushFromCloud", function(request, response) {
           title: 'Vote for Pedro',
           body: 'If you vote for Pedro, your wildest dreams will come true'
         },
-        to: 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ'
+        to: ['eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ']
       }
     }).then(function(httpResponse) {
       console.log(httpResponse.text);
     }, function(httpResponse) {
       console.error('Request failed with response code ' + httpResponse.status);
   });
+  res.success('Sent!');
 });
 
 Parse.Cloud.job("cleanPanics", function(request, response) {
