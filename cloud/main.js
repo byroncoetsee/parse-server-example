@@ -3,11 +3,20 @@ Parse.Cloud.define('hello', function(req, res) {
   res.success('Hi');
 });
 
-Parse.Push.send({
-  channels: [ "Hiking" ],
-  data: {
-    alert: "Cloud Code can send pushes!!!"
-  }
+Parse.Cloud.httpRequest({
+    method: 'POST',
+    url: 'http://www.example.com/create_post',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: {
+      title: 'Vote for Pedro',
+      body: 'If you vote for Pedro, your wildest dreams will come true'
+    }
+  }).then(function(httpResponse) {
+    console.log(httpResponse.text);
+  }, function(httpResponse) {
+    console.error('Request failed with response code ' + httpResponse.status);
 });
 
 Parse.Cloud.job("cleanPanics", function(request, response) {
