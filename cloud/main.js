@@ -4,37 +4,24 @@ Parse.Cloud.define('hello', function(req, res) {
 });
 
 Parse.Cloud.define('push', function(req, res) {
-  var http = require("https");
-
-  var options = {
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://fcm.googleapis.com/fcm/send",
     "method": "POST",
-    "hostname": "fcm.googleapis.com",
-    "port": null,
-    "path": "/fcm/send",
     "headers": {
       "authorization": "key=AAAAiT43N9A:APA91bE-DrOG3GhiwvvzJGdlEBpFgpwHomp51n7ZNo8Bx-T4yHrdSIiCbE4MHkEHruC_jzcQ6tsYRfVS4jWYuSdd9_F6uU1_3jreYpmazsPXao7a0RjqO-UeWMa8StZeyxV1MuPVfpeX",
       "content-type": "application/json",
       "cache-control": "no-cache",
-      "postman-token": "e79e9594-11a4-52b5-eb59-8bccb38943ad"
-    }
-  };
+      "postman-token": "a793c3b6-d655-9bae-74ac-10810511ef0c"
+    },
+    "processData": false,
+    "data": "{ \"notification\": {\n    \"title\": \"Portugal vs. Denmark\",\n    \"body\": \"5 to 1\"\n  },\n  \"to\" : \"eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ\"\n}"
+  }
 
-  var req = http.request(options, function (res) {
-    var chunks = [];
-
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
-    });
-
-    res.on("end", function () {
-      var body = Buffer.concat(chunks);
-      console.log(body.toString());
-    });
+  $.ajax(settings).done(function (response) {
+    console.log(response);
   });
-
-  req.write(JSON.stringify({ notification: { title: 'Portugal vs. Denmark', body: '5 to 1' },
-    to: 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ' }));
-  req.end();
   res.success('Sent');
 }
 
