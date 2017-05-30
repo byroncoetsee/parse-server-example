@@ -35,7 +35,7 @@ Parse.Cloud.define("pushFromCloud", function(request, response) {
 });
 
 function sendPush(IDs, username, contactNumber, response) {
-	Parse.Cloud.httpRequest({
+  Parse.Cloud.httpRequest({
       method: 'POST',
       url: 'https://fcm.googleapis.com/fcm/send',
       headers: {
@@ -43,6 +43,7 @@ function sendPush(IDs, username, contactNumber, response) {
         'Authorization': 'key=AAAAiT43N9A:APA91bE-DrOG3GhiwvvzJGdlEBpFgpwHomp51n7ZNo8Bx-T4yHrdSIiCbE4MHkEHruC_jzcQ6tsYRfVS4jWYuSdd9_F6uU1_3jreYpmazsPXao7a0RjqO-UeWMa8StZeyxV1MuPVfpeX'
       },
       body: {
+        "collapse_key": username,
         notification: {
           title: username + ' needs your help!',
           body: 'Open the app to contact them (' + contactNumber + ') or to view their location on a map'
