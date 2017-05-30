@@ -3,9 +3,9 @@ vm: true
 
 env_variables:
   # --REQUIRED--
-  DATABASE_URI: mongodb://localhost:27017/dev
-  APP_ID: <your-app-id>
-  MASTER_KEY: <your-master-key>
+  DATABASE_URI: mongodb://heroku_s172qkgq:k60iv8kj6p7r0371kg58thdair@ds059165.mlab.com:59165/heroku_s172qkgq
+  APP_ID: PANICING-TURTLE
+  MASTER_KEY: PANICINGTURTLE3847TR386TB281XN1NY7YNXM
   # --OPTIONAL--
   # FILE_KEY: <your-file-key>
   # PARSE_MOUNT: /parse

@@ -4,27 +4,59 @@ Parse.Cloud.define('hello', function(req, res) {
 });
 
 Parse.Cloud.define("pushFromCloud", function(request, response) {
-  Parse.Cloud.httpRequest({
-      method: 'POST',
-      url: 'https://fcm.googleapis.com/fcm/send',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': 'key=AAAAiT43N9A:APA91bE-DrOG3GhiwvvzJGdlEBpFgpwHomp51n7ZNo8Bx-T4yHrdSIiCbE4MHkEHruC_jzcQ6tsYRfVS4jWYuSdd9_F6uU1_3jreYpmazsPXao7a0RjqO-UeWMa8StZeyxV1MuPVfpeX'
-      },
-      body: {
-        notification: {
-          title: 'Vote for Pedro',
-          body: 'If you vote for Pedro, your wildest dreams will come true'
-        },
-        registration_ids: ['eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ']
-      }
-    }).then(function(httpResponse) {
-      res.success('Sent!');
-      console.log(httpResponse.text);
-    }, function(httpResponse) {
-      res.success('Failed');
-      console.error('Request failed with response code ' + httpResponse.status);
-  });
+
+  var channel = request.params.channel;
+  response.success(channel);
+
+
+  // ========= fetching Firebase IDs
+
+
+  // var query = new Parse.Query(Parse.Installation);
+  // query.notEqualTo("firebaseID", null);
+  // query.contains("channels", "tester");
+  // query.find({
+  //   useMasterKey: true,
+  //   success: function(results) {
+
+  //     var IDs = [];
+
+  //     for (var i = 0; i < results.length; ++i) {
+  //       IDs.push(results[i].get("firebaseID"));
+  //     }
+
+  //     response.success(IDs);
+  //   },
+  //   error: function() {
+  //     response.error(error);
+  //   }
+  // });
+
+
+  // ======= sending push
+
+
+  // Parse.Cloud.httpRequest({
+  //     method: 'POST',
+  //     url: 'https://fcm.googleapis.com/fcm/send',
+  //     headers: {
+  //       'Content-Type': 'application/json;charset=utf-8',
+  //       'Authorization': 'key=AAAAiT43N9A:APA91bE-DrOG3GhiwvvzJGdlEBpFgpwHomp51n7ZNo8Bx-T4yHrdSIiCbE4MHkEHruC_jzcQ6tsYRfVS4jWYuSdd9_F6uU1_3jreYpmazsPXao7a0RjqO-UeWMa8StZeyxV1MuPVfpeX'
+  //     },
+  //     body: {
+  //       notification: {
+  //         title: 'Vote for Pedro',
+  //         body: 'If you vote for Pedro, your wildest dreams will come true'
+  //       },
+  //       registration_ids: ['eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ']
+  //     }
+  //   }).then(function(httpResponse) {
+  //     res.success('Sent!');
+  //     console.log(httpResponse.text);
+  //   }, function(httpResponse) {
+  //     res.success('Failed');
+  //     console.error('Request failed with response code ' + httpResponse.status);
+  // });
 });
 
 Parse.Cloud.job("cleanPanics", function(request, response) {
