@@ -16,7 +16,7 @@ Parse.Cloud.define("pushFromCloud", function(request, response) {
           title: 'Vote for Pedro',
           body: 'If you vote for Pedro, your wildest dreams will come true'
         },
-        registration_ids: ['eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ']
+        registration_ids: ['eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ', 'eZPuUJ8kJIk:APA91bHsDJ8Hss0xjWrdMplhDKWrfZoNyzJICWLAPgYvBbnArCN9r2ARiche7TYE1-2DhE5xSk343SDnpc4skzaHvAKr-SBbWPWOpc3UhH1Z9M_jN5MeCV4jOh7xiNGd6UTtxvNrAsRQ']
       }
     }).then(function(httpResponse) {
       res.success('Sent!');
