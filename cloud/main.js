@@ -3,6 +3,28 @@ Parse.Cloud.define('hello', function(req, res) {
   res.success('Hi');
 });
 
+Parse.Cloud.define("pushFromId", function(request, response) {
+  var objectId = request.params.objectId;
+
+  var query = new Parse.Query("Panics");
+  query.equalTo('objectId', objectId);
+  query.include('user');
+
+  query.find({
+    useMasterKey: true,
+    success: function(result) {
+
+      var user = result.get('active');
+
+      response.success(result);
+    },
+    error: function() {
+      response.error(error);
+    }
+  });
+
+});
+
 Parse.Cloud.define("pushFromCloud", function(request, response) {
 
   var channel = request.params.channel;
