@@ -16,6 +16,7 @@ Parse.Cloud.define("pushFromCloud", function(request, response) {
 
   var query = new Parse.Query(Parse.Installation);
   query.notEqualTo("firebaseID", null);
+  query.equalTo("allowNotifications", true);
   query.contains("channels", channel);
   query.find({
     useMasterKey: true,
