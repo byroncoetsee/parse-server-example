@@ -21,9 +21,23 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
       var groups = getGroups(user);
       var location = getLocation(panicObject);
 
+      if (groups.length == 0) {
+        response.error('No groups');
+      }
+
+      var groupsCheckedCounter = 0;
+
+      var allIDs = [];
+
       for (var i = 0; i < groups.length; ++i) {
         getInstallationIDs(groups[i], function(IDs) {
-          sendPush(IDs, user, location);
+          allIDs = allIDs.concat(IDs);
+          groupsCheckedCounter++;
+
+          if (groupsCheckedCounter == groups.length) {
+            // finished(allIDs);
+            sendPush(allIDs, user, location);
+          }
         });
       }
 
@@ -33,6 +47,15 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
     }
   });
 });
+
+function finished(IDs) {
+  response.success(IDs);
+}
+
+function getIdsLazyArray(IDs) {
+
+  return [];
+}
 
 function getUser(object) {
   return object.get('user');
