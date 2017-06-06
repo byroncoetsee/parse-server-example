@@ -100,8 +100,8 @@ function sendPush(IDs, user, location) {
   var name = user.get('name');
   var number = user.get('cellNumber');
 
-  // var lat = location.get('latitude');
-  // var lng = location.get('longitude');
+  var latitude = location['latitude'];
+  var longitude = location['longitude'];
 
 
   Parse.Cloud.httpRequest({
@@ -117,10 +117,10 @@ function sendPush(IDs, user, location) {
           title: name + ' needs your help!',
           body: 'Open the app to contact them (' + number + ') or to view their location on a map'
         },
-        // data: {
-          // latitude: lat,
-          // longitude: lng
-        // },
+        data: {
+          lat: latitude,
+          lng: longitude
+        },
         registration_ids: IDs
     }
     }).then(function(httpResponse) {
