@@ -6,6 +6,8 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
   request = req
   response = resp
 
+  // var totalTestDict = Object.assign(testDict, testDict2);
+
   var objectId = request.params.objectId;
 
   var query = new Parse.Query("Panics");
@@ -27,16 +29,17 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
 
       var groupsCheckedCounter = 0;
 
-      var allIDs = [];
+      var allIDs = {};
 
       for (var i = 0; i < groups.length; ++i) {
         getInstallationIDs(groups[i], function(IDs) {
-          allIDs = allIDs.concat(IDs);
+          allIDs = Object.assign(allIDs, IDs);
           groupsCheckedCounter++;
 
           if (groupsCheckedCounter == groups.length) {
-            // finished(allIDs);
-            sendPush(allIDs, user, location);
+            // finished(Object.keys(allIDs));
+            var keys = Object.keys(allIDs);
+            sendPush(keys, user, location);
           }
         });
       }
@@ -78,10 +81,10 @@ function getInstallationIDs(channel, callback) {
   query.find({
     useMasterKey: true,
     success: function(results) {
-      var IDs = [];
+      var IDs = {};
 
       for (var i = 0; i < results.length; ++i) {
-        IDs.push(results[i].get('firebaseID'));
+        IDs[results[i].get('firebaseID')] = '';
       }
 
       callback(IDs);
@@ -132,36 +135,6 @@ function sendPush(IDs, user, location) {
 // Parse functions
 // ===============
 
-
-// DEPRECATED
-Parse.Cloud.define("pushFromCloud", function(request, response) {
-
-  var channel = request.params.channel;
-  var username = request.params.username;
-  var contactNumber = request.params.contactNumber;
-
-  var IDs = [];
-
-  var query = new Parse.Query(Parse.Installation);
-  query.notEqualTo("firebaseID", null);
-  query.equalTo("allowNotifications", true);
-  query.contains("channels", channel);
-  query.find({
-    useMasterKey: true,
-    success: function(results) {
-
-      for (var i = 0; i < results.length; ++i) {
-        IDs.push(results[i].get("firebaseID"));
-      }
-
-      sendPush(IDs, username, contactNumber, response);
-
-    },
-    error: function() {
-      response.error(error);
-    }
-  });
-});
 
 Parse.Cloud.job("cleanPanics", function(request, response) {
     var query = new Parse.Query("Panics");
