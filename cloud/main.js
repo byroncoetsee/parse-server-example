@@ -77,7 +77,6 @@ function getInstallationIDs(channel, callback) {
   var query = new Parse.Query(Parse.Installation);
   query.notEqualTo('firebaseID', null);
   query.equalTo('allowNotifications', true);
-  query.equalTo('allowNotifications', null);
   query.contains('channels', channel);
   query.find({
     useMasterKey: true,
