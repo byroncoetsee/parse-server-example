@@ -6,9 +6,8 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
   request = req
   response = resp
 
-  // var totalTestDict = Object.assign(testDict, testDict2);
-
   var objectId = request.params.objectId;
+  // finished(objectId);
 
   var query = new Parse.Query("Panics");
   query.equalTo('objectId', objectId);
@@ -18,6 +17,8 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
     useMasterKey: true,
     success: function(result) {
       var panicObject = result[0]
+
+      // finished(panicObject);
 
       var user = getUser(panicObject)
       var groups = getGroups(user);
@@ -74,11 +75,13 @@ function getLocation(object) {
 
 function getInstallationIDs(channel, callback) {
 
+  var formattedChannel = channel.toLowerCase().replace(/\b\w/g, l => l.toUpperCase()).replace(/\s/g,'')
   var query = new Parse.Query(Parse.Installation);
+
   query.notEqualTo('firebaseID', null);
   query.equalTo('allowNotifications', true);
   query.equalTo('allowNotifications', null);
-  query.contains('channels', channel);
+  query.contains('channels', formattedChannel);
   query.find({
     useMasterKey: true,
     success: function(results) {
