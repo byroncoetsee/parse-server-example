@@ -32,13 +32,15 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
 
       var allIDs = {};
 
+      // finished(groups[2].toLowerCase().replace(/\b\w/g, l => l.toUpperCase()).replace(/\s/g,''));
+
       for (var i = 0; i < groups.length; ++i) {
         getInstallationIDs(groups[i], function(IDs) {
           allIDs = Object.assign(allIDs, IDs);
           groupsCheckedCounter++;
 
           if (groupsCheckedCounter == groups.length) {
-            // finished(Object.keys(allIDs));
+            finished(Object.keys(allIDs));
             var keys = Object.keys(allIDs);
             sendPush(keys, user, location);
           }
@@ -79,8 +81,7 @@ function getInstallationIDs(channel, callback) {
   var query = new Parse.Query(Parse.Installation);
 
   query.notEqualTo('firebaseID', null);
-  query.equalTo('allowNotifications', true);
-  query.equalTo('allowNotifications', null);
+  query.notEqualTo('allowNotifications', false);
   query.contains('channels', formattedChannel);
   query.find({
     useMasterKey: true,
