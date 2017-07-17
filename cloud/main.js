@@ -144,27 +144,35 @@ function sendPush(IDs, user, location) {
 Parse.Cloud.job("cleanPanics", function(request, response) {
     var query = new Parse.Query("Panics");
     var d = new Date();
+    var numberOfHoursAgo = 24
+
  
     query.equalTo("active", true);
+    query.lessThanOrEqualTo('updatedAt', new Date(d.getTime() - (60 * 60 * numberOfHoursAgo * 1000)));
+
     query.find({
       success: function(results) {
 
+        // End if none found
+        if (results.length == 0) { response.success('None found'); }
+
         for (var i = 0; i < results.length; i++) {
-          if (results[i].updatedAt < (d.getTime() - (60 * 60 * 24 * 1000))) {
-            results[i].set("active",false);// = true;
-          }
+          results[i].set("active", false);
         }
 
         Parse.Object.saveAll(results,{
           success: function(list) {
             // All the objects were saved.
-            response.success("ok - updated: " + results.length);  //saveAll is now finished and we can properly exit with confidence :-)
+            response.success("Updated: " + results.length);  //saveAll is now finished and we can properly exit with confidence :-)
           },
           error: function(error) {
             // An error occurred while saving one of the objects.
-            response.error("failure on saving list ");
+            response.error("Failure on saving objects");
           },
         });
-      }
-    })
+      },
+      error: function(error) {
+        response.error("Error on query.find: " + error);
+      },
+    });
 });
