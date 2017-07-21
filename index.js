@@ -23,8 +23,8 @@ var api = new ParseServer({
 
   // Email verification and password reset
   verifyUserEmails: false,
-  publicServerURL: 'https://panicing-turtle.herokuapp.com',
-  appName: 'Parse App',
+  // publicServerURL: 'https://panicing-turtle.herokuapp.com',
+  // appName: 'Parse App',
   emailAdapter: { 
     module: 'parse-server-simple-mailgun-adapter',
     options: { 
