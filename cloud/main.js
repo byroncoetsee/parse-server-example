@@ -42,7 +42,7 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
           if (groupsCheckedCounter == groups.length) {
             finished(Object.keys(allIDs));
             var keys = Object.keys(allIDs);
-            sendPush(keys, user, location);
+            sendPush(keys, user, location, objectId);
           }
         });
       }
@@ -100,7 +100,7 @@ function getInstallationIDs(channel, callback) {
   });
 }
 
-function sendPush(IDs, user, location) {
+function sendPush(IDs, user, location, objectId) {
 
   var name = user.get('name');
   var number = user.get('cellNumber');
@@ -118,13 +118,17 @@ function sendPush(IDs, user, location) {
       },
       body: {
         "collapse_key": name,
+        priority: 'high',
         notification: {
           title: name + ' needs your help!',
-          body: 'Open the app to contact them (' + number + ') or to view their location on a map'
+          body: 'Open the app to contact them (' + number + ') or to view their location on a map',
+          icon: 'ic_stat_healing',
+          sound: 'default'
         },
         data: {
-          lat: latitude,
-          lng: longitude
+          "lat": latitude,
+          "lng": longitude,
+          "objectId": objectId
         },
         registration_ids: IDs
     }
