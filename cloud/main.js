@@ -2,6 +2,46 @@
 var request;
 var response;
 
+
+// =============================
+// TEST FUNCTION - DO NOT REMOVE
+// =============================
+
+Parse.Cloud.define("registerLocation", function(req, resp) {
+  request = req
+  response = resp
+
+  var fullLocation = String(request.params.data).split(',');
+
+  var lat = parseFloat(fullLocation[0]);
+  var lng = parseFloat(fullLocation[1]);
+
+  var point = new Parse.GeoPoint({latitude: lat, longitude: lng});
+
+  var LocationObject = Parse.Object.extend("TestLocations")
+  var locationObject = new LocationObject();
+
+  locationObject.set("location", point);
+
+  locationObject.save(null, {
+    success: function(locationObject) {
+      // Execute any logic that should take place after the object is saved.
+      finished('New object created with objectId: ' + locationObject.id);
+    },
+    error: function(locationObject, error) {
+      // Execute any logic that should take place if the save fails.
+      // error is a Parse.Error with an error code and message.
+      finished('Failed to create new object, with error code: ' + error.message);
+    }
+  });
+})
+
+
+// ================================
+// FUNCTIONS FOR BRAVE
+// ================================
+
+
 Parse.Cloud.define("pushFromId", function(req, resp) {
   request = req
   response = resp
