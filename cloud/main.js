@@ -4,7 +4,7 @@ var response;
 
 
 // =============================
-// TEST FUNCTION - DO NOT REMOVE
+// TEST FUNCTION - DO NOT REMOVE!
 // =============================
 
 Parse.Cloud.define("registerLocation", function(req, resp) {
