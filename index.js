@@ -12,10 +12,10 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://heroku_s172qkgq:k60iv8kj6p7r0371kg58thdair@ds059165.mlab.com:59165/heroku_s172qkgq',
+  databaseURI: databaseUri || 'mongodb://heroku_jt6hrhpv:42cin73pcrfn688ri9d00qtrto@ds145263.mlab.com:45263/heroku_jt6hrhpv',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'PANICING-TURTLE',
-  masterKey: process.env.MASTER_KEY || 'PANICINGTURTLE3847TR386TB281XN1NY7YNXM', //Add your master key here. Keep it secret!
+  appId: process.env.APP_ID || 'tracking-turtle',
+  masterKey: process.env.MASTER_KEY || 'TRACKINGTURTLE9874365982365982', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
