@@ -13,11 +13,11 @@ Parse.Cloud.define("registerLocation", function(req, resp) {
 
   var lat = parseFloat(fullLocation[0]);
   var lng = parseFloat(fullLocation[1]);
-  var charge = parseFloat(fullLocation[3]);
+  var charge = parseFloat(fullLocation[2]);
 
   var point = new Parse.GeoPoint({latitude: lat, longitude: lng});
 
-  var LocationObject = Parse.Object.extend("TestLocations")
+  var LocationObject = Parse.Object.extend("Locations")
   var locationObject = new LocationObject();
 
   locationObject.set("location", point);
