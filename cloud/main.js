@@ -2,6 +2,89 @@
 var request;
 var response;
 
+Parse.Cloud.define("newAlertHook", function(req, resp) {
+
+  request = req
+  response = resp
+
+  var panic = request.params.panic;
+  var group = request.params.group;
+  var user = request.params.user;
+
+  var object = new Parse.Object("PanicGroup");
+  object.set("panic", panic);
+  object.set("group", group);
+  object.set("user", user);
+
+  finished("ysy");
+
+  object.save(null, {
+    success: function(object) {
+      response.success("Updated: " + object);
+    },
+    error: function(object, error) {
+      response.error("Failure on saving objects");
+    }
+  });
+});
+
+
+Parse.Cloud.define("getActiveAlerts", function(req, resp) {
+
+  request = req
+  response = resp
+
+  var query = new Parse.Query("PanicGroup");
+
+  query.equalTo('group', request.params.group);
+  query.notEqualTo('user', null);
+
+  // query.include('user');
+
+  query.find({
+    useMasterKey: true,
+    success: function(result) {
+
+      // finished(result);
+      finished("yyay");
+      // var panicObject = result[0]
+
+      // var user = getUser(panicObject)
+      // var groups = getGroups(user);
+      // var location = getLocation(panicObject);
+
+      // if (groups.length == 0) {
+      //   response.error('No groups');
+      // }
+
+      // var groupsCheckedCounter = 0;
+
+      // var allIDs = {};
+
+      // finished(groups[2].toLowerCase().replace(/\b\w/g, l => l.toUpperCase()).replace(/\s/g,''));
+
+      // for (var i = 0; i < groups.length; ++i) {
+      //   getInstallationIDs(installationId, groups[i], function(IDs) {
+      //     allIDs = Object.assign(allIDs, IDs);
+      //     groupsCheckedCounter++;
+
+      //     if (groupsCheckedCounter == groups.length) {
+      //       finished(Object.keys(allIDs));
+      //       var keys = Object.keys(allIDs);
+
+      //       sendPush(keys, user, location, objectId);
+      //     }
+      //   });
+      // }
+
+    },
+    error: function() {
+      response.error(error);
+    }
+  });
+});
+
+
 Parse.Cloud.define("pushFromId", function(req, resp) {
   request = req
   response = resp
@@ -54,8 +137,8 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
   });
 });
 
-function finished(IDs) {
-  response.success(IDs);
+function finished(something) {
+  response.success(something);
 }
 
 function getIdsLazyArray(IDs) {
@@ -181,3 +264,12 @@ Parse.Cloud.job("cleanPanics", function(request, response) {
       },
     });
 });
+
+
+
+
+// create intermediate table
+// pointer to Panic and Group 
+// Query where Group.objectId= and updatedAt=
+// Check for Active state 
+// return list
