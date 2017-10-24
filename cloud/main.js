@@ -12,7 +12,7 @@ Parse.Cloud.define("newAlertHook", function(req, resp)
   var groups = request.params.groups;
   var user = request.params.user;
 
-  // var createdPanicGroups = null;
+  var createdPanicGroups = "";
   //Create a Panic group record for each group
   for(var groupIndex = 0; groupIndex < groups.length; groupIndex++)
   {
@@ -25,13 +25,13 @@ Parse.Cloud.define("newAlertHook", function(req, resp)
       success: function(object) 
       {
         if(groupIndex == groups.length) 
-          response.success("Created: " + object.id);
+          response.success("Created: " + createdPanicGroups);
         else
           createdPanicGroups += object.id + "\n";
       },
       error: function(object, error) 
       {
-        response.error("Failure on saving objects");
+        response.error("Failure on saving objects: " + error.getMessage());
       }
     });
   }
