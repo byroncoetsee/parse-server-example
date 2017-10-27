@@ -2,8 +2,7 @@
 var request;
 var response;
 
-Parse.Cloud.define("newAlertHook", function(req, resp) 
-{
+Parse.Cloud.define("newAlertHook", function(req, resp) {
 
   request = req
   response = resp
@@ -14,23 +13,20 @@ Parse.Cloud.define("newAlertHook", function(req, resp)
 
   var createdPanicGroups = "";
   //Create a Panic group record for each group
-  for(var groupIndex = 0; groupIndex < groups.length; groupIndex++)
-  {
+  for(var groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     var object = new Parse.Object("PanicGroup");
     object.set("panic", panic);
     object.set("group", groups[groupIndex]);
     object.set("user", user);
-    object.save(null, 
-    {
-      success: function(object) 
-      {
+    
+    object.save(null, {
+      success: function(object) {
         if(groupIndex == groups.length) 
           response.success("Created: " + createdPanicGroups);
         else
           createdPanicGroups += object.id + "\n";
       },
-      error: function(object, error) 
-      {
+      error: function(object, error) {
         response.error("Failure on saving objects: " + error.getMessage());
       }
     });
@@ -38,19 +34,17 @@ Parse.Cloud.define("newAlertHook", function(req, resp)
 });
 
 
-Parse.Cloud.define("getActiveAlerts", function(req, resp)
- {
+Parse.Cloud.define("getActiveAlerts", function(req, resp) {
 
   request = req
   response = resp
 
-  var d = new Date();
+  var date = new Date();
   var numberOfHoursAgo = 24;
   var groups = request.params.groups;
 
   //Query for each group provided
-  for(var groupIndex = 0; groupIndex < groups.length; groupIndex++)
-  {
+  for(var groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     var query = new Parse.Query("PanicGroup");
 
     query.equalTo('group', groups[groupIndex]);
