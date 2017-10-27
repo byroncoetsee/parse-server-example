@@ -18,7 +18,7 @@ Parse.Cloud.define("newAlertHook", function(req, resp) {
     object.set("panic", panic);
     object.set("group", groups[groupIndex]);
     object.set("user", user);
-    
+
     object.save(null, {
       success: function(object) {
         if(groupIndex == groups.length) 
@@ -50,6 +50,7 @@ Parse.Cloud.define("getActiveAlerts", function(req, resp) {
     query.equalTo('group', groups[groupIndex]);
     // query.lessThanOrEqualTo('updatedAt', new Date(d.getTime() - (60 * 60 * numberOfHoursAgo * 1000)));
     query.include('panic');
+    query.include('user');
 
     query.find(
     {
