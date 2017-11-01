@@ -16,7 +16,7 @@ Parse.Cloud.define("resetPassword", function(req, resp) {
     },
     error: function(error) {
       // Show the error message somewhere
-      finished("Error: " + error.code + " " + error.message);
+      finished(error.message);
       // alert("Error: " + error.code + " " + error.message);
     }
   });
