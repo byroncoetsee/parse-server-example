@@ -7,7 +7,9 @@ Parse.Cloud.define("resetPassword", function(req, resp) {
   request = req
   response = resp
 
-  Parse.User.requestPasswordReset("byroncoetsee@gmail.com", {
+  var email = request.params.email;
+
+  Parse.User.requestPasswordReset(email, {
     success: function() {
     // Password reset request was sent successfully
       finished("Sent");
