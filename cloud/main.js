@@ -2,6 +2,24 @@
 var request;
 var response;
 
+Parse.Cloud.define("resetPassword", function(req, resp) {
+
+  request = req
+  response = resp
+
+  Parse.User.requestPasswordReset("byroncoetsee@gmail.com", {
+    success: function() {
+    // Password reset request was sent successfully
+      finished("Sent");
+    },
+    error: function(error) {
+      // Show the error message somewhere
+      finished("Error: " + error.code + " " + error.message);
+      // alert("Error: " + error.code + " " + error.message);
+    }
+  });
+});
+
 Parse.Cloud.define("newAlertHook", function(req, resp) {
 
   request = req
