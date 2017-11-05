@@ -38,6 +38,7 @@ Parse.Cloud.define("newAlertHook", function(req, resp) {
     object.set("panic", panic);
     object.set("group", groups[groupIndex]);
     object.set("user", user);
+    object.set("active", true);
 
     object.save(null, {
       success: function(object) {
@@ -60,7 +61,6 @@ Parse.Cloud.define("getActiveAlerts", function(req, resp) {
   response = resp
 
   var date = new Date();
-  var numberOfHoursAgo = 24;
   var groups = request.params.groups;
 
   //Query for each group provided
@@ -68,7 +68,7 @@ Parse.Cloud.define("getActiveAlerts", function(req, resp) {
     var query = new Parse.Query("PanicGroup");
 
     query.equalTo('group', groups[groupIndex]);
-    // query.lessThanOrEqualTo('updatedAt', new Date(d.getTime() - (60 * 60 * numberOfHoursAgo * 1000)));
+    query.equalTo('active', true);
     query.include('panic');
     query.include('user');
 
@@ -235,6 +235,42 @@ function sendPush(IDs, user, location, objectId) {
 
 Parse.Cloud.job("cleanPanics", function(request, response) {
     var query = new Parse.Query("Panics");
+    var d = new Date();
+    var numberOfHoursAgo = 24
+
+ 
+    query.equalTo("active", true);
+    query.lessThanOrEqualTo('updatedAt', new Date(d.getTime() - (60 * 60 * numberOfHoursAgo * 1000)));
+
+    query.find({
+      success: function(results) {
+
+        // End if none found
+        if (results.length == 0) { response.success('None found'); }
+
+        for (var i = 0; i < results.length; i++) {
+          results[i].set("active", false);
+        }
+
+        Parse.Object.saveAll(results,{
+          success: function(list) {
+            // All the objects were saved.
+            response.success("Updated: " + results.length);  //saveAll is now finished and we can properly exit with confidence :-)
+          },
+          error: function(error) {
+            // An error occurred while saving one of the objects.
+            response.error("Failure on saving objects");
+          },
+        });
+      },
+      error: function(error) {
+        response.error("Error on query.find: " + error);
+      },
+    });
+});
+
+Parse.Cloud.job("cleanPanicGroups", function(request, response) {
+    var query = new Parse.Query("PanicGroup");
     var d = new Date();
     var numberOfHoursAgo = 24
 
