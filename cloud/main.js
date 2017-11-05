@@ -12,7 +12,7 @@ Parse.Cloud.define("resetPassword", function(req, resp) {
   Parse.User.requestPasswordReset(email, {
     success: function() {
     // Password reset request was sent successfully
-      finished("Sent");
+      finished("Please check your email for reset instructions.");
     },
     error: function(error) {
       // Show the error message somewhere
