@@ -3,9 +3,9 @@ vm: true
 
 env_variables:
   # --REQUIRED--
-  DATABASE_URI: mongodb://heroku_hjmffzdk:702v5f28hgmo3ir9dfa1hut0f@ds255767.mlab.com:55767/heroku_hjmffzdk
-  APP_ID: blackbox-turtle
-  MASTER_KEY: BLACKBOXTURTLE764TBDR3267TBCUY34GC7B
+  DATABASE_URI: mongodb://heroku_s172qkgq:k60iv8kj6p7r0371kg58thdair@ds059165.mlab.com:59165/heroku_s172qkgq
+  APP_ID: PANICING-TURTLE
+  MASTER_KEY: PANICINGTURTLE3847TR386TB281XN1NY7YNXM
   # --OPTIONAL--
   # FILE_KEY: <your-file-key>
   # PARSE_MOUNT: /parse
