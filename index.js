@@ -14,7 +14,7 @@ if (!databaseUri) {
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://heroku_hjmffzdk:702v5f28hgmo3ir9dfa1hut0f@ds255767.mlab.com:55767/heroku_hjmffzdk',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'BLACKBOX-TURTLE',
+  appId: process.env.APP_ID || 'blackbox-turtle',
   masterKey: process.env.MASTER_KEY || 'BLACKBOXTURTLE764TBDR3267TBCUY34GC7B', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
@@ -23,7 +23,7 @@ var api = new ParseServer({
 
   // Email verification and password reset
   verifyUserEmails: false,
-  publicServerURL: 'https://blackbox-turtle.herokuapp.com',
+  // publicServerURL: 'https://blackbox-turtle.herokuapp.com',
   // appName: 'Parse App',
   emailAdapter: { 
     module: 'parse-server-simple-mailgun-adapter',
