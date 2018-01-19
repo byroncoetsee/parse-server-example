@@ -1,7 +1,7 @@
 
 var request;
 var response;
-var byronFirebaseId = "dpENNi2QB2o:APA91bHRNppdT4OY2MgUPiNDR2FqaYOKyHeUm9xiz6n0ruQ0lLL4iSF6jApA93UrzYdnTjaKnN9wi7kOpI252clDpFv59ojsy8NI1jbRj6Ob6GcgvJDKQCzA1Ywu-6HjP-yrf6PQyp8H";
+// var byronFirebaseId = "dpENNi2QB2o:APA91bHRNppdT4OY2MgUPiNDR2FqaYOKyHeUm9xiz6n0ruQ0lLL4iSF6jApA93UrzYdnTjaKnN9wi7kOpI252clDpFv59ojsy8NI1jbRj6Ob6GcgvJDKQCzA1Ywu-6HjP-yrf6PQyp8H";
 
 Parse.Cloud.define("resetPassword", function(req, resp) {
 
