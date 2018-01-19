@@ -142,8 +142,8 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
 Parse.Cloud.afterSave("Messages", function(req) {
   request = req
 
-  var name = request.params.displayName;
-  var text = request.params.text;
+  var name = request.displayName;
+  var text = request.text;
 
   sendTestPush(name, text);
 });
