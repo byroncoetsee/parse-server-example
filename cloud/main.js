@@ -139,27 +139,26 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
   });
 });
 
-Parse.Cloud.afterSave("Messages", function(request) {
-  sendPush();
-  // const query = new Parse.Query("Messages");
-  // query.get(request.object.get("post").id)
-  //   .then(function(post) {
-  //     post.increment("comments");
-  //     return post.save();
-  //   })
-  //   .catch(function(error) {
-  //     console.error("Got an error " + error.code + " : " + error.message);
-  //   });
-});
+// Parse.Cloud.afterSave("Messages", function(request) {
+//   sendPush();
+//   // const query = new Parse.Query("Messages");
+//   // query.get(request.object.get("post").id)
+//   //   .then(function(post) {
+//   //     post.increment("comments");
+//   //     return post.save();
+//   //   })
+//   //   .catch(function(error) {
+//   //     console.error("Got an error " + error.code + " : " + error.message);
+//   //   });
+// });
 
-Parse.Cloud.define("sendTestPush", function(req, resp) {
+// Parse.Cloud.define("sendTestPush", function(req, resp) {
 
-  request = req
-  response = resp
+//   request = req
+//   response = resp
 
-  sendTestPush(request.params.to);
-
-  });
+//   sendTestPush(request.params.to);
+// });
 
 function finished(something) {
   response.success(something);
