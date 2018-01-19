@@ -1,6 +1,7 @@
 
 var request;
 var response;
+// var byronFirebaseId = "dpENNi2QB2o:APA91bHRNppdT4OY2MgUPiNDR2FqaYOKyHeUm9xiz6n0ruQ0lLL4iSF6jApA93UrzYdnTjaKnN9wi7kOpI252clDpFv59ojsy8NI1jbRj6Ob6GcgvJDKQCzA1Ywu-6HjP-yrf6PQyp8H";
 
 Parse.Cloud.define("resetPassword", function(req, resp) {
 
@@ -54,7 +55,6 @@ Parse.Cloud.define("newAlertHook", function(req, resp) {
   }
 });
 
-
 Parse.Cloud.define("getActiveAlerts", function(req, resp) {
 
   request = req
@@ -85,9 +85,7 @@ Parse.Cloud.define("getActiveAlerts", function(req, resp) {
       }
     });
   }
-
 });
-
 
 Parse.Cloud.define("pushFromId", function(req, resp) {
   request = req
@@ -140,6 +138,27 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
     }
   });
 });
+
+// Parse.Cloud.afterSave("Messages", function(request) {
+//   sendPush();
+//   // const query = new Parse.Query("Messages");
+//   // query.get(request.object.get("post").id)
+//   //   .then(function(post) {
+//   //     post.increment("comments");
+//   //     return post.save();
+//   //   })
+//   //   .catch(function(error) {
+//   //     console.error("Got an error " + error.code + " : " + error.message);
+//   //   });
+// });
+
+// Parse.Cloud.define("sendTestPush", function(req, resp) {
+
+//   request = req
+//   response = resp
+
+//   sendTestPush(request.params.to);
+// });
 
 function finished(something) {
   response.success(something);
@@ -227,9 +246,32 @@ function sendPush(IDs, user, location, objectId) {
   });
 };
 
+// function sendTestPush() {
+//   Parse.Cloud.httpRequest({
+//       method: 'POST',
+//       url: 'https://fcm.googleapis.com/fcm/send',
+//       headers: {
+//         'Content-Type': 'application/json;charset=utf-8',
+//         'Authorization': 'key=AAAAiT43N9A:APA91bE-DrOG3GhiwvvzJGdlEBpFgpwHomp51n7ZNo8Bx-T4yHrdSIiCbE4MHkEHruC_jzcQ6tsYRfVS4jWYuSdd9_F6uU1_3jreYpmazsPXao7a0RjqO-UeWMa8StZeyxV1MuPVfpeX'
+//       },
+//       body: {
+//         notification: {
+//           title: 'Tester',
+//           body: "You shouldn't be recieving this...",
+//           sound: 'default'
+//         },
+//         'to': byronFirebaseId
+//       }
+//     }).then(function(httpResponse) {
+//       response.success('Sent!');
+//     }, function(httpResponse) {
+//       response.error(error);
+//   });
+// }
+
 
 // ===============
-// Parse functions
+// Parse Jobs
 // ===============
 
 
