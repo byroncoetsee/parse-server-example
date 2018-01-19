@@ -246,28 +246,28 @@ function sendPush(IDs, user, location, objectId) {
   });
 };
 
-function sendTestPush() {
-  Parse.Cloud.httpRequest({
-      method: 'POST',
-      url: 'https://fcm.googleapis.com/fcm/send',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': 'key=AAAAiT43N9A:APA91bE-DrOG3GhiwvvzJGdlEBpFgpwHomp51n7ZNo8Bx-T4yHrdSIiCbE4MHkEHruC_jzcQ6tsYRfVS4jWYuSdd9_F6uU1_3jreYpmazsPXao7a0RjqO-UeWMa8StZeyxV1MuPVfpeX'
-      },
-      body: {
-        notification: {
-          title: 'Tester',
-          body: "You shouldn't be recieving this...",
-          sound: 'default'
-        },
-        'to': byronFirebaseId
-      }
-    }).then(function(httpResponse) {
-      response.success('Sent!');
-    }, function(httpResponse) {
-      response.error(error);
-  });
-}
+// function sendTestPush() {
+//   Parse.Cloud.httpRequest({
+//       method: 'POST',
+//       url: 'https://fcm.googleapis.com/fcm/send',
+//       headers: {
+//         'Content-Type': 'application/json;charset=utf-8',
+//         'Authorization': 'key=AAAAiT43N9A:APA91bE-DrOG3GhiwvvzJGdlEBpFgpwHomp51n7ZNo8Bx-T4yHrdSIiCbE4MHkEHruC_jzcQ6tsYRfVS4jWYuSdd9_F6uU1_3jreYpmazsPXao7a0RjqO-UeWMa8StZeyxV1MuPVfpeX'
+//       },
+//       body: {
+//         notification: {
+//           title: 'Tester',
+//           body: "You shouldn't be recieving this...",
+//           sound: 'default'
+//         },
+//         'to': byronFirebaseId
+//       }
+//     }).then(function(httpResponse) {
+//       response.success('Sent!');
+//     }, function(httpResponse) {
+//       response.error(error);
+//   });
+// }
 
 
 // ===============
