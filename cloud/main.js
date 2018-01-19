@@ -140,7 +140,7 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
 });
 
 Parse.Cloud.afterSave("Messages", function(request) {
-  sendPush();
+  sendTestPush();
   // const query = new Parse.Query("Messages");
   // query.get(request.object.get("post").id)
   //   .then(function(post) {
