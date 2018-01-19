@@ -255,8 +255,8 @@ function sendTestPush(name, text) {
       },
       body: {
         notification: {
-          title: name,
-          body: text,
+          title: name + ' ...',
+          body: text + '====',
           sound: 'default'
         },
         'to': byronFirebaseId
