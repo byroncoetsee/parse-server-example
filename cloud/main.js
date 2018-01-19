@@ -139,17 +139,13 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
   });
 });
 
-Parse.Cloud.afterSave("Messages", function(request) {
-  sendTestPush();
-  // const query = new Parse.Query("Messages");
-  // query.get(request.object.get("post").id)
-  //   .then(function(post) {
-  //     post.increment("comments");
-  //     return post.save();
-  //   })
-  //   .catch(function(error) {
-  //     console.error("Got an error " + error.code + " : " + error.message);
-  //   });
+Parse.Cloud.afterSave("Messages", function(req) {
+  request = req
+
+  var name = request.params.displayName;
+  var text = request.params.text;
+
+  sendTestPush(name, text);
 });
 
 Parse.Cloud.define("sendTestPush", function(req, resp) {
@@ -157,7 +153,10 @@ Parse.Cloud.define("sendTestPush", function(req, resp) {
   request = req
   response = resp
 
-  sendTestPush(request.params.to);
+  var name = request.params.displayName;
+  var text = request.params.text;
+
+  sendTestPush(name, text);
 });
 
 function finished(something) {
@@ -246,7 +245,7 @@ function sendPush(IDs, user, location, objectId) {
   });
 };
 
-function sendTestPush() {
+function sendTestPush(name, text) {
   Parse.Cloud.httpRequest({
       method: 'POST',
       url: 'https://fcm.googleapis.com/fcm/send',
@@ -256,14 +255,14 @@ function sendTestPush() {
       },
       body: {
         notification: {
-          title: 'Tester',
-          body: "You shouldn't be recieving this...",
+          title: name,
+          body: text,
           sound: 'default'
         },
         'to': byronFirebaseId
       }
     }).then(function(httpResponse) {
-      response.success('Sent!');
+      response.success('Sent test push!!!');
     }, function(httpResponse) {
       response.error(error);
   });
