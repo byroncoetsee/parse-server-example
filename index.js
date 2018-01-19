@@ -25,14 +25,14 @@ var api = new ParseServer({
   verifyUserEmails: false,
   publicServerURL: 'https://panicing-turtle.herokuapp.com/parse',
   appName: 'Panicing Turtle',
-  emailAdapter: { 
-    module: 'parse-server-simple-mailgun-adapter',
-    options: { 
-               fromAddress: 'byroncoetsee@gmail.com',
-               domain: 'sandbox65d632eefe564d9e833b9cd1d045b0a1.mailgun.org', 
-               apiKey: 'key-4053c4e2c0fa3476d9b6e414de6ff50c', 
-             }
-   },
+  // emailAdapter: { 
+  //   module: 'parse-server-simple-mailgun-adapter',
+  //   options: { 
+  //              fromAddress: 'byroncoetsee@gmail.com',
+  //              domain: 'sandbox65d632eefe564d9e833b9cd1d045b0a1.mailgun.org', 
+  //              apiKey: 'key-4053c4e2c0fa3476d9b6e414de6ff50c', 
+  //            }
+  //  },
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
