@@ -39,9 +39,6 @@ function saveNewOrder(orderDetails, orderNumber) {
 
   order.save(null, {
     success: function(newOrder) {
-      // var jsonResponse = {
-      //   "orderNumber" : orderNumber
-      // };
       finished(newOrder);
     },
     error: function(newOrder, error) {
