@@ -12,9 +12,10 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://heroku_hjmffzdk:702v5f28hgmo3ir9dfa1hut0f@ds255767.mlab.com:55767/heroku_hjmffzdk',
+  // databaseURI: databaseUri || 'mongodb://heroku_hjmffzdk:702v5f28hgmo3ir9dfa1hut0f@ds255767.mlab.com:55767/heroku_hjmffzdk',
+  databaseURI: databaseUri || 'mongodb://heroku_fm2lcg6l:mqr39cog9dhms035pb2akcocb7@ds157097.mlab.com:57097/heroku_fm2lcg6l',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'blackbox-turtle',
+  appId: process.env.APP_ID || 'BLACKBOX-TURTLE',
   masterKey: process.env.MASTER_KEY || 'BLACKBOXTURTLE764TBDR3267TBCUY34GC7B', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
