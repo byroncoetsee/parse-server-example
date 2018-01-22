@@ -12,7 +12,7 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://heroku_hjmffzdk:702v5f28hgmo3ir9dfa1hut0f@ds255767.mlab.com:55767/heroku_hjmffzdk',
+  databaseURI: databaseUri || 'mongodb://heroku_fm2lcg6l:mqr39cog9dhms035pb2akcocb7@ds157097.mlab.com:57097/heroku_fm2lcg6l',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'blackbox-turtle',
   masterKey: process.env.MASTER_KEY || 'BLACKBOXTURTLE764TBDR3267TBCUY34GC7B', //Add your master key here. Keep it secret!
@@ -23,7 +23,7 @@ var api = new ParseServer({
 
   // Email verification and password reset
   verifyUserEmails: false,
-  // publicServerURL: 'https://blackbox-turtle.herokuapp.com',
+  publicServerURL: 'https://blackbox-turtle.herokuapp.com',
   // appName: 'Parse App',
   // emailAdapter: { 
   //   module: 'parse-server-simple-mailgun-adapter',
@@ -49,7 +49,7 @@ app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
+  res.status(200).send('BlackBox coffee, baby! ... Now stop snooping around and mind your own business :|');
 });
 
 // There will be a test page available on the /test path of your server url

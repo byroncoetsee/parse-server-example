@@ -3,36 +3,53 @@
 
 var request;
 var response;
+var currentUser;
+
+var orderObject = Parse.Object.extend("Orders");
 
 
-Parse.Cloud.define("registerLocation", function(req, resp) {
-  request = req
-  response = resp
+Parse.Cloud.define("newOrder", function(req, resp) {
+  request = req;
+  response = resp;
+  currentUser = request.user;
 
-  var fullLocation = String(request.params.data).split(',');
+  var orderDetails = request.params.orderDetails;
 
-  var lat = parseFloat(fullLocation[0]);
-  var lng = parseFloat(fullLocation[1]);
-  var charge = parseFloat(fullLocation[2]);
+  var query = new Parse.Query(orderObject);
+  query.descending("number");
 
-  var point = new Parse.GeoPoint({latitude: lat, longitude: lng});
+  query.first({
+    success: function(object) {
 
-  var LocationObject = Parse.Object.extend("Locations")
-  var locationObject = new LocationObject();
-
-  locationObject.set("location", point);
-  locationObject.set("charge", charge);
-
-  locationObject.save(null, {
-    success: function(locationObject) {
-      finished('New object created with objectId: ' + locationObject.id);
+      var nextOrderNumber = parseInt(object.get("number")) + 1;
+      saveNewOrder(orderDetails, nextOrderNumber);
     },
-    error: function(locationObject, error) {
-      finished('Failed to create new object, with error code: ' + error.message);
+    error: function(error) {
+      finished(error.message);
     }
   });
 })
 
-function finished(IDs) {
-  response.success(IDs);
+function saveNewOrder(orderDetails, orderNumber) {
+  var order = new orderObject();
+
+  order.set('user', currentUser);
+  order.set('details', orderDetails);
+  order.set('number', orderNumber);
+
+  order.save(null, {
+    success: function(newOrder) {
+      // var jsonResponse = {
+      //   "orderNumber" : orderNumber
+      // };
+      finished(newOrder);
+    },
+    error: function(newOrder, error) {
+      finished('Failed to create new object, with error code: ' + error.message);
+    }
+  });
+}
+
+function finished(something) {
+  response.success(something);
 }
