@@ -1,4 +1,4 @@
-// parse-dashboard --appId tracking-turtle --masterKey TRACKINGTURTLE9874365982365982 --serverURL "http://tracking-turtle.herokuapp.com/parse" --appName tracking-turtle
+// parse-dashboard --appId BLACKBOX-TURTLE --masterKey BLACKBOXTURTLE74562938472374561 --serverURL "http://blackbox-turtle.herokuapp.com/parse" --appName blackbox-turtle
 
 
 var request;
