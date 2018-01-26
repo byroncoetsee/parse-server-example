@@ -19,13 +19,14 @@ var api = new ParseServer({
   masterKey: process.env.MASTER_KEY || 'BLACKBOXTURTLE764TBDR3267TBCUY34GC7B', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
-    classNames: ["Posts", "Comments"], // List of classes to support for query subscriptions
-    push: JSON.parse(process.env.PARSE_SERVER_PUSH || '{"ios": {' +
-        '"pfx": "PushNotification_Prod.p12",' +
-        '"passphrase": "",' +
-        '"bundleId": "io.flyingmongoose.BlackBox-Coffee",' +
-        '"production": false' +
-    '}}'),
+    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+  },
+  push: {
+    ios: {
+      pfx : __dirname + "/PushNotification_Prod.p12",
+      bundleId : "io.flyingmongoose.BlackBox-Coffee",
+      production : false
+    }
   },
 
   // Email verification and password reset
