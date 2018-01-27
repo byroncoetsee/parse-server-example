@@ -30,7 +30,7 @@ Parse.Cloud.define("newAlertHook", function(req, resp) {
 
   var panic = request.params.panic;
   var groups = request.params.groups;
-  var user = request.params.user;
+  var user = request.user;
 
   var createdPanicGroups = "";
   //Create a Panic group record for each group
