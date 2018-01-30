@@ -67,20 +67,22 @@ Parse.Cloud.define("getActiveAlerts", function(req, resp) {
   for(var groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     var query = new Parse.Query("PanicGroup");
 
+    query.exists('group');
+    query.exists('panic');
+    query.exists('user');
+
     query.equalTo('group', groups[groupIndex]);
     query.equalTo('active', true);
     query.include('panic');
     query.include('user');
 
-    query.find(
-    {
+    query.find( {
       useMasterKey: true,
-      success: function(results)
-      {
+      success: function(results) {
+        console.log(results);
         finished(results);
       },
-      error: function()
-       {
+      error: function() {
         response.error(error);
       }
     });
@@ -93,7 +95,6 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
 
   var installationId = request.params.installationId
   var objectId = request.params.objectId;
-  // finished(installationId);
 
   var query = new Parse.Query("Panics");
   query.equalTo('objectId', objectId);
@@ -131,7 +132,6 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
           }
         });
       }
-
     },
     error: function() {
       response.error(error);
@@ -142,30 +142,15 @@ Parse.Cloud.define("pushFromId", function(req, resp) {
 Parse.Cloud.afterSave("Messages", function(req) {
   request = req
 
-  var name = request.displayName;
-  var text = request.text;
+  var name = req.user.get("name");
+  var text = req.object.get("text");
+  var id = req.object.id;
 
-  sendTestPush(name, text);
-});
-
-Parse.Cloud.define("sendTestPush", function(req, resp) {
-
-  request = req
-  response = resp
-
-  var name = request.params.displayName;
-  var text = request.params.text;
-
-  sendTestPush(name, text);
+  sendTestPush(name, text, id);
 });
 
 function finished(something) {
   response.success(something);
-}
-
-function getIdsLazyArray(IDs) {
-
-  return [];
 }
 
 function getUser(object) {
@@ -234,7 +219,8 @@ function sendPush(IDs, user, location, objectId) {
         data: {
           "lat": latitude,
           "lng": longitude,
-          "objectId": objectId
+          "objectId": objectId,
+          type : 'newAlert'
         },
         registration_ids: IDs
     }
@@ -245,7 +231,10 @@ function sendPush(IDs, user, location, objectId) {
   });
 };
 
-function sendTestPush(name, text) {
+function sendTestPush(name, text, messageId) {
+  console.log('------');
+  console.log(messageId);
+  console.log('------');
   Parse.Cloud.httpRequest({
       method: 'POST',
       url: 'https://fcm.googleapis.com/fcm/send',
@@ -255,9 +244,11 @@ function sendTestPush(name, text) {
       },
       body: {
         notification: {
-          title: name + ' ...',
-          body: text + '====',
-          sound: 'default'
+          title: name,
+          body: text,
+          sound: 'default',
+          type : 'newMessage',
+          id : messageId
         },
         'to': byronFirebaseId
       }
