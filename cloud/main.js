@@ -83,7 +83,6 @@ Parse.Cloud.define("getActiveAlerts", function(req, resp) {
     query.find( {
       useMasterKey: true,
       success: function(results) {
-        console.log(results);
         finished(results);
       },
       error: function() {
@@ -149,55 +148,64 @@ Parse.Cloud.afterSave("Messages", function(req) {
   var name = req.user.get("name");
   var text = req.object.get("text");
   var id = req.object.id;
-  var objAlert = req.object.get("alert");
+  var alert = req.object.get("alert");
 
-  //target all users currently responding to the alert for a push notif
-  var responderIds = objAlert.get("responders");
-  var respCheckedCounter = 0;
-  var allRespFirebaseIds = {};
+  getAlertResponders(alert, function (IDs) {
+    var respCheckedCounter = 0;
+    var allRespFirebaseIds = {};
 
-  for(var i = 0; i < responderIds.length; ++i)
-  {
-    getResponderFirebaseIds(responderIds[i], function(respFirebaseIds)
-    {
-        allRespFirebaseIds = Object.assign(allRespFirebaseIds, respFirebaseIds);
-        respCheckedCounter++;
+    log(IDs);
 
-        if(respCheckedCounter == responderIds.length)
-        {
-          finished(Object.keys(allRespFirebaseIds));
+    for(var i = 0; i < IDs.length; ++i) {
+      getResponderFirebaseIds(IDs[i], function(respFirebaseId) {
 
-          //Send msg to all responders via push
-          sendRespPushForChatMsg(name, text, id, allRespFirebaseIds);
-        }
-    })
-  }
+          allRespFirebaseIds = Object.assign(allRespFirebaseIds, respFirebaseId);
+          respCheckedCounter++;
+
+          if(respCheckedCounter == IDs.length) {
+            log(Object.keys(allRespFirebaseIds));
+
+            //Send msg to all responders via push
+            sendRespPushForChatMsg(name, text, id, Object.keys(allRespFirebaseIds));
+          };
+      });
+    };
+  });
 });
 
-function getResponderFirebaseIds(responderId, callback)
-{
+function getAlertResponders(alertPointer, callback) {
+
+  alertPointer.fetch({
+    success: function(object){
+      callback(object.get('responders'));
+    }
+  })
+};
+
+function getResponderFirebaseIds(responderId, callback) {
+  log(responderId + '_______');
+
+  var userPointer = Parse.User;
+
     var query = new Parse.Query(Parse.Installation);
-    query.notEqualTo('firebaseID', null);
+    query.exists('firebaseID');
     query.notEqualTo('allowNotifications', false)
-    query.equalTo('currentUser', responderId);
+    query.equalTo('currentUser', new userPointer({id: responderId}));
     query.find({
       useMasterKey: true,
-      success: function(results)
-      {
+      success: function(results) {
           var respFirebaseIds = {};
 
-          for(var i = 0; i < results.length; ++i)
-          {
-              respFirebaseIds[i] = results[i].get('firebaseID');
+          for(var i = 0; i < results.length; ++i) {
+              respFirebaseIds[results[i].get('firebaseID')] = '';
           }
 
           callback(respFirebaseIds);
       },
-      error: function()
-      {
+      error: function() {
         response.error(error);
       }
-      });
+    });
 }
 
 function finished(something) {
@@ -283,9 +291,9 @@ function sendPush(IDs, user, location, objectId) {
 };
 
 function sendRespPushForChatMsg(name, text, messageId, allRespFirebaseIds) {
-  console.log('------');
-  console.log(messageId);
-  console.log('------');
+  log(messageId);
+  log(allRespFirebaseIds);
+
   Parse.Cloud.httpRequest({
       method: 'POST',
       url: 'https://fcm.googleapis.com/fcm/send',
