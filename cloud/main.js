@@ -3,6 +3,12 @@ var request;
 var response;
 var byronFirebaseId = "dpENNi2QB2o:APA91bHRNppdT4OY2MgUPiNDR2FqaYOKyHeUm9xiz6n0ruQ0lLL4iSF6jApA93UrzYdnTjaKnN9wi7kOpI252clDpFv59ojsy8NI1jbRj6Ob6GcgvJDKQCzA1Ywu-6HjP-yrf6PQyp8H";
 
+function log(something) {
+  console.log('--------------');
+  console.log(something);
+  console.log('--------------');
+}
+
 Parse.Cloud.define("resetPassword", function(req, resp) {
 
   request = req
@@ -32,7 +38,6 @@ Parse.Cloud.define("newAlertHook", function(req, resp) {
   var groups = request.params.groups;
   var user = request.user;
 
-  var createdPanicGroups = "";
   //Create a Panic group record for each group
   for(var groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     var object = new Parse.Object("PanicGroup");
@@ -43,10 +48,9 @@ Parse.Cloud.define("newAlertHook", function(req, resp) {
 
     object.save(null, {
       success: function(object) {
-        if(groupIndex == groups.length) 
-          response.success("Created: " + createdPanicGroups);
-        else
-          createdPanicGroups += object.id + "\n";
+        if(groupIndex == groups.length) {
+          response.success("Created: " + object.id);
+        }
       },
       error: function(object, error) {
         response.error("Failure on saving objects: " + error.getMessage());
