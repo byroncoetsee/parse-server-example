@@ -149,9 +149,56 @@ Parse.Cloud.afterSave("Messages", function(req) {
   var name = req.user.get("name");
   var text = req.object.get("text");
   var id = req.object.id;
+  var objAlert = req.object.get("alert");
 
-  sendTestPush(name, text, id);
+  //target all users currently responding to the alert for a push notif
+  var responderIds = objAlert.get("responders");
+  var respCheckedCounter = 0;
+  var allRespFirebaseIds = {};
+
+  for(var i = 0; i < responderIds.length; ++i)
+  {
+    getResponderFirebaseIds(responderIds[i], function(respFirebaseIds)
+    {
+        allRespFirebaseIds = Object.assign(allRespFirebaseIds, respFirebaseIds);
+        respCheckedCounter++;
+
+        if(respCheckedCounter == responderIds.length)
+        {
+          finished(Object.keys(allRespFirebaseIds));
+
+          //Send msg to all responders via push
+          sendRespPushForChatMsg(name, text, id, allRespFirebaseIds);
+        }
+    })
+  }
 });
+
+function getResponderFirebaseIds(responderId, callback)
+{
+    var query = new Parse.Query(Parse.Installation);
+    query.notEqualTo('firebaseID', null);
+    query.notEqualTo('allowNotifications', false)
+    query.equalTo('currentUser', responderId);
+    query.find({
+      useMasterKey: true,
+      success: function(results)
+      {
+          var respFirebaseIds = {};
+
+          for(var i = 0; i < results.length; ++i)
+          {
+              respFirebaseIds[i] = results[i].get('firebaseID');
+          }
+
+          callback(respFirebaseIds);
+      },
+      error: function()
+      {
+        response.error(error);
+      }
+      });
+}
 
 function finished(something) {
   response.success(something);
@@ -235,7 +282,7 @@ function sendPush(IDs, user, location, objectId) {
   });
 };
 
-function sendTestPush(name, text, messageId) {
+function sendRespPushForChatMsg(name, text, messageId, allRespFirebaseIds) {
   console.log('------');
   console.log(messageId);
   console.log('------');
@@ -254,7 +301,7 @@ function sendTestPush(name, text, messageId) {
           type : 'newMessage',
           id : messageId
         },
-        'to': byronFirebaseId
+        registration_ids: allRespFirebaseIds
       }
     }).then(function(httpResponse) {
       response.success('Sent test push!!!');
