@@ -36,6 +36,9 @@ function saveNewOrder(orderDetails, orderNumber) {
   order.set('user', currentUser);
   order.set('details', orderDetails);
   order.set('number', orderNumber);
+  order.set('cancelled', false);
+  order.set('collected', false);
+  order.set('expired', false);
   order.set('open', true);
 
   order.save(null, {
