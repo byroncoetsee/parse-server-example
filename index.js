@@ -18,8 +18,9 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'BLACKBOX-TURTLE',
   masterKey: process.env.MASTER_KEY || 'BLACKBOXTURTLE764TBDR3267TBCUY34GC7B', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  verbose: true,
   liveQuery: {
-    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+    classNames: ["Orders"] // List of classes to support for query subscriptions
   },
   push: {
     ios: {
