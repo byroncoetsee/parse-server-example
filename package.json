@@ -13,7 +13,7 @@
     "heroku": "^0.2.0",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "*"
+    "parse-server": "^2.7.2"
   },
   "scripts": {
     "start": "node index.js"

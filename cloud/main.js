@@ -7,6 +7,21 @@ var currentUser;
 
 var orderObject = Parse.Object.extend("Orders");
 
+Parse.Cloud.beforeSave("Orders", function(req, resp) {
+
+  var cancelled = req.object.get("cancelled");
+  var collected = req.object.get("collected");
+  var expired = req.object.get("expired");
+
+  if (cancelled || collected || expired) {
+    req.object.set('open', false);
+  } else {
+    req.object.set('open', true);
+  }
+
+  resp.success();
+
+});
 
 Parse.Cloud.define("newOrder", function(req, resp) {
   request = req;
@@ -39,7 +54,7 @@ function saveNewOrder(orderDetails, orderNumber) {
   order.set('cancelled', false);
   order.set('collected', false);
   order.set('expired', false);
-  order.set('open', true);
+  // order.set('open', true);
 
   order.save(null, {
     success: function(newOrder) {

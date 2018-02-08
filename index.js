@@ -7,12 +7,13 @@ var path = require('path');
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
+
+
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
 var api = new ParseServer({
-  // databaseURI: databaseUri || 'mongodb://heroku_hjmffzdk:702v5f28hgmo3ir9dfa1hut0f@ds255767.mlab.com:55767/heroku_hjmffzdk',
   databaseURI: databaseUri || 'mongodb://heroku_fm2lcg6l:mqr39cog9dhms035pb2akcocb7@ds157097.mlab.com:57097/heroku_fm2lcg6l',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'BLACKBOX-TURTLE',
@@ -32,20 +33,7 @@ var api = new ParseServer({
 
   // Email verification and password reset
   verifyUserEmails: false,
-  // publicServerURL: 'https://blackbox-turtle.herokuapp.com',
-  // appName: 'Parse App',
-  // emailAdapter: { 
-  //   module: 'parse-server-simple-mailgun-adapter',
-  //   options: { 
-  //              fromAddress: 'byroncoetsee@gmail.com',
-  //              domain: 'sandbox65d632eefe564d9e833b9cd1d045b0a1.mailgun.org', 
-  //              apiKey: 'key-4053c4e2c0fa3476d9b6e414de6ff50c', 
-  //            }
-  //  },
 });
-// Client-keys like the javascript key or the .NET key are not necessary with parse-server
-// If you wish you require them, you can set them as options in the initialization above:
-// javascriptKey, restAPIKey, dotNetKey, clientKey
 
 var app = express();
 
@@ -74,6 +62,6 @@ httpServer.listen(port, function() {
 });
 
 // This will enable the Live Query real-time server
-ParseServer.createLiveQueryServer(httpServer);
+var parseLiveQueryServer = ParseServer.createLiveQueryServer(httpServer);
 
 
