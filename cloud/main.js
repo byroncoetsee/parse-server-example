@@ -7,6 +7,28 @@ var currentUser;
 
 var orderObject = Parse.Object.extend("Orders");
 
+// =========================================================================
+Parse.Cloud.define("resetPassword", function(req, resp) {
+
+  request = req
+  response = resp
+
+  var email = request.params.email;
+
+  Parse.User.requestPasswordReset(email, {
+    success: function() {
+    // Password reset request was sent successfully
+      finished("Please check your email for reset instructions.");
+    },
+    error: function(error) {
+      // Show the error message somewhere
+      finished(error.message);
+      // alert("Error: " + error.code + " " + error.message);
+    }
+  });
+});
+// =========================================================================
+
 Parse.Cloud.beforeSave("Orders", function(req, resp) {
 
   var cancelled = req.object.get("cancelled");
