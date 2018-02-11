@@ -33,6 +33,16 @@ var api = new ParseServer({
 
   // Email verification and password reset
   verifyUserEmails: false,
+  publicServerURL: 'https://blackbox-turtle.herokuapp.com/parse',
+  appName: 'BlackBox Coffee',
+  emailAdapter: { 
+    module: 'parse-server-simple-mailgun-adapter',
+    options: { 
+               fromAddress: 'byroncoetsee@gmail.com',
+               domain: 'sandboxc348f52be1d34c84854d447053a997b3.mailgun.org', 
+               apiKey: 'key-793849050bebea13372335a2c03faa60', 
+             }
+   },
 });
 
 var app = express();
